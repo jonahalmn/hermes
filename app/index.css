@@ -6,3 +6,14 @@ html, body {
 
     font-family: sans-serif;
 }
+
+.loader{
+    display: flex;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+}

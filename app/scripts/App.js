@@ -16,30 +16,35 @@ export default class App {
 
     constructor() {
 
+        this.curloadElt = document.querySelector('.curload');
+        this.loaderElt = document.querySelector('.loader');
+
+        this.time = 0;
+
         this.container = document.querySelector( '#main' );
         document.body.appendChild( this.container );
         OBJLoader(THREE);
         this.loader = new THREE.OBJLoader();
         //console.log( THREE.OBJLoader());
-        this.heading = 0;
         
 
-        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 10 );
-        this.camera.y = 0.9;
-        this.camera.z = 0.3;
+        //this.pitchCam = new THREE.Object3D();
 
-        //this.controls = new PointerLockControls(this.camera);
+        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+        //this.camera.y = 0.9;
+        //this.camera.z = 0.3;
+
+        this.controls = new PointerLockControls(this.camera);
+        this.controls.enabled =true;
+        //this.controls.getObject().position.z = -10;
         //this.controls = new OrbitControls(this.camera);
 
 
         this.scene = new THREE.Scene();
 
-        this.target = new THREE.Vector3(0,0,0);
-        //this.target.position.set(0,0,0);
-        this.scene.add(this.target);
-        this.camera.lookAt(this.target);
-        
+        this.scene.add(this.controls.getObject());
+
         this.setLights();
 
         // var axesHelper = new THREE.AxesHelper( 5 );
@@ -82,16 +87,17 @@ export default class App {
             sceneOBJ,
             // called when resource is loaded
             ( object ) => {
-                object.scale.set(0.003, 0.003, 0.003);
+                object.scale.set(0.05, 0.05, 0.05);
                 object.material = material;
                 this.scene.add( object );
-                
+                this.loaderElt.style.opacity = 0;
         
             },
             // called when loading is in progresses
-            function ( xhr ) {
+             ( xhr )=> {
         
                 console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+                this.curloadElt.innerHTML = Math.floor(xhr.loaded / xhr.total * 100);
         
             },
             // called when loading has errors
@@ -104,9 +110,12 @@ export default class App {
     }
 
     render() {
-        
-        
 
+        //this.heading.y = Math.cos(this.time * 0.1);
+
+        //this.updateCameraRotation();
+        this.controls.update();
+        //this.time++;
     	this.renderer.render( this.scene, this.camera );
     }
 
@@ -115,7 +124,8 @@ export default class App {
     }
 
     updateCameraRotation(){
-
+        this.camera.rotation.x = this.heading.x;
+        this.camera.rotation.y = this.heading.y;
     }
 
     onWindowResize() {
