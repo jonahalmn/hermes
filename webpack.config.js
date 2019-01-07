@@ -79,6 +79,12 @@ module.exports = function(env) {
             },{
                 test: [/\.mp3$/, /\.dae$/, /\.jpg$/, /\.obj$/, /\.fbx$/],
                 use: ['file-loader?name=[path][name].[hash].[ext]']
+            },
+            {
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            use: [
+                'file-loader'
+            ]
             }]
         },
         devtool: env == 'dev' ? 'cheap-eval-source-map' : '',

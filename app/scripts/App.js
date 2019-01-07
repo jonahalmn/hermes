@@ -67,16 +67,16 @@ export default class App {
     }
 
     setLights(){
-        let light = new THREE.DirectionalLight( 0xffffff, 1 );
+        let light = new THREE.DirectionalLight( 0xffffff, 0.6 );
         light.position.z = -1;
-        light.position.y = 0.25;
+        light.position.y = 1;
         this.scene.add( light );
 
         let helper = new THREE.DirectionalLightHelper( light, 5 );
 
         this.scene.add( helper );
 
-        let ambient = new THREE.AmbientLight(0xffffff, 0.1);
+        let ambient = new THREE.AmbientLight(0xffffff, 0.3);
         this.scene.add( ambient );
     }
 
