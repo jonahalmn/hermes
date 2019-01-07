@@ -1,25 +1,52 @@
 // example import asset
 // import imgPath from './assets/img.jpg';
 
+import OBJLoader from 'three-obj-loader';
+import OrbitControl from 'three-orbit-controls';
+import sceneOBJ from '../objs/scene.obj'
+
+import PointerLockControls from 'three-pointerlock';
+
 // TODO : add Dat.GUI
 // TODO : add Stats
+
+let OrbitControls = OrbitControl(THREE);
 
 export default class App {
 
     constructor() {
 
         this.container = document.querySelector( '#main' );
-    	document.body.appendChild( this.container );
+        document.body.appendChild( this.container );
+        OBJLoader(THREE);
+        this.loader = new THREE.OBJLoader();
+        //console.log( THREE.OBJLoader());
+        this.heading = 0;
+        
 
         this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 10 );
-        this.camera.position.z = 1;
+        this.camera.y = 0.9;
+        this.camera.z = 0.3;
 
-    	this.scene = new THREE.Scene();
+        //this.controls = new PointerLockControls(this.camera);
 
-        let geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-	    let material = new THREE.MeshNormalMaterial();
-    	this.mesh = new THREE.Mesh( geometry, material );
-    	this.scene.add( this.mesh );
+        //this.controls = new OrbitControls(this.camera);
+
+
+        this.scene = new THREE.Scene();
+
+        this.target = new THREE.Vector3(0,0,0);
+        //this.target.position.set(0,0,0);
+        this.scene.add(this.target);
+        this.camera.lookAt(this.target);
+        
+        this.setLights();
+
+        // var axesHelper = new THREE.AxesHelper( 5 );
+        // scene.add( axesHelper );
+
+        var gridHelper = new THREE.GridHelper( 10, 10 );
+        this.scene.add( gridHelper );
 
     	this.renderer = new THREE.WebGLRenderer( { antialias: true } );
     	this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -29,15 +56,66 @@ export default class App {
     	window.addEventListener('resize', this.onWindowResize.bind(this), false);
         this.onWindowResize();
 
+        this.loadScene();
+
         this.renderer.animate( this.render.bind(this) );
     }
 
-    render() {
+    setLights(){
+        let light = new THREE.DirectionalLight( 0xffffff, 1 );
+        light.position.z = -1;
+        light.position.y = 0.25;
+        this.scene.add( light );
 
-        this.mesh.rotation.x += 0.01;
-        this.mesh.rotation.y += 0.02;
+        let helper = new THREE.DirectionalLightHelper( light, 5 );
+
+        this.scene.add( helper );
+
+        let ambient = new THREE.AmbientLight(0xffffff, 0.1);
+        this.scene.add( ambient );
+    }
+
+    loadScene(){
+        let material = new THREE.MeshPhongMaterial({color: 0x383838});
+        this.loader.load(
+            // resource URL
+            sceneOBJ,
+            // called when resource is loaded
+            ( object ) => {
+                object.scale.set(0.003, 0.003, 0.003);
+                object.material = material;
+                this.scene.add( object );
+                
+        
+            },
+            // called when loading is in progresses
+            function ( xhr ) {
+        
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+        
+            },
+            // called when loading has errors
+            function ( error ) {
+        
+                console.log( 'An error happened' );
+        
+            }
+        );
+    }
+
+    render() {
+        
+        
 
     	this.renderer.render( this.scene, this.camera );
+    }
+
+    updateCameraPosition(){
+
+    }
+
+    updateCameraRotation(){
+
     }
 
     onWindowResize() {
