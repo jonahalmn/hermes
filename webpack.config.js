@@ -77,15 +77,15 @@ module.exports = function(env) {
                     use: 'css-loader'
                 })
             },{
-                test: [/\.mp3$/, /\.dae$/, /\.jpg$/, /\.obj$/, /\.fbx$/],
+                test: [/\.mp3$/, /\.dae$/, /\.jpg$/, /\.png$/, /\.obj$/, /\.fbx$/, /\.svg$/],
                 use: ['file-loader?name=[path][name].[hash].[ext]']
             },
             {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            use: [
-                'file-loader'
-            ]
-            }]
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    'file-loader'
+                ]
+              }]
         },
         devtool: env == 'dev' ? 'cheap-eval-source-map' : '',
         plugins: plugins,

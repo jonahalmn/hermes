@@ -1,8 +1,6 @@
 @font-face {
-    font-family: 'OratorStd';
-    src: url('./OratorStd.otf') format('otf');
-    font-weight: 500;
-    font-style: normal;
+    font-family: 'OratorStd1';
+    src: url('./font/Orator-Std-Medium.ttf') format('truetype');
 }
 
 html, body {
@@ -11,7 +9,7 @@ html, body {
 
     background: #000;
 
-    font-family: 'OratorStd',sans-serif;
+    font-family: 'OratorStd1',sans-serif;
 }
 
 .loader{
@@ -23,4 +21,105 @@ html, body {
     justify-content: center;
     align-items: center;
     transition: all .4s;
+}
+
+.ui{
+    position: fixed;
+    opacity: 0;
+    transition: all 2s;
+    display: flex;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    color: #fff;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    z-index: 999;
+}
+
+.top{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.bottom{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.ctas{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90vw;
+    color: #000;
+}
+
+.logohermes{
+    height: 100px;
+    margin-top: 10vh;
+}
+
+.soundlogo{
+    height: 20px;
+}
+
+.ui h2{
+    background: #000;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 35px;
+}
+
+.part{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 33%;
+}
+
+.part p{
+    margin: 0;
+}
+
+.sound{
+    width: 33%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lib{
+    font-size: 11px;
+}
+
+.val{
+    font-size: 15px;
+}
+
+.hint{
+    font-size: 11px;
+    text-align: center;
+}
+
+.go{
+    background: transparent;
+    font-family: 'OratorStd1', sans-serif;
+    font-size: 19px;
+    border: 0;
+    z-index: 9999;
+    text-decoration: underline;
+    letter-spacing: -2px;
+    padding-bottom: 60px;
+    cursor: pointer;
+    outline: none;
+}
+
+#main{
+    opacity: 0;
+    transition: all 2s;
 }

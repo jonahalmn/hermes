@@ -7,6 +7,9 @@ import sceneOBJ from '../objs/scene.obj'
 
 import PointerLockControls from 'three-pointerlock';
 
+import logoHermes from '../img/Logo_Hermes.png';
+import logoSound from '../img/sound.svg';
+
 // TODO : add Dat.GUI
 // TODO : add Stats
 
@@ -18,6 +21,15 @@ export default class App {
 
         this.curloadElt = document.querySelector('.curload');
         this.loaderElt = document.querySelector('.loader');
+        this.uiElt = document.querySelector(".ui");
+        this.logoImageElt = document.querySelector('.logohermes');
+        this.soundImgElt = document.querySelector('.soundlogo');
+        this.buttonEtl = document.querySelector('.go');
+
+        this.buttonEtl.addEventListener('click', this.startExp.bind(this));
+
+        this.logoImageElt.src = logoHermes;
+        this.soundImgElt.src = logoSound;
 
         this.time = 0;
 
@@ -36,7 +48,7 @@ export default class App {
         //this.camera.z = 0.3;
 
         this.controls = new PointerLockControls(this.camera);
-        this.controls.enabled =true;
+        this.controls.enabled =false;
         //this.controls.getObject().position.z = -10;
         //this.controls = new OrbitControls(this.camera);
 
@@ -55,7 +67,8 @@ export default class App {
 
     	this.renderer = new THREE.WebGLRenderer( { antialias: true } );
     	this.renderer.setPixelRatio( window.devicePixelRatio );
-    	this.renderer.setSize( window.innerWidth, window.innerHeight );
+        this.renderer.setSize( window.innerWidth, window.innerHeight );
+        this.renderer.setClearColor(0xffffff, 1);
     	this.container.appendChild( this.renderer.domElement );
 
     	window.addEventListener('resize', this.onWindowResize.bind(this), false);
@@ -63,18 +76,31 @@ export default class App {
 
         this.loadScene();
 
+        this.controls.getObject().position.x = 25.47716;
+        this.controls.getObject().position.z = 57.27199;
+
         this.renderer.animate( this.render.bind(this) );
     }
 
     setLights(){
-        let light = new THREE.DirectionalLight( 0xffffff, 0.6 );
-        light.position.z = -1;
-        light.position.y = 1;
+        let light = new THREE.DirectionalLight( 0xffffff, 0.4 );
+        light.position.z = -10;
+        light.position.y = 10;
         this.scene.add( light );
 
-        let helper = new THREE.DirectionalLightHelper( light, 5 );
+        let light2 = new THREE.DirectionalLight( 0xffffff, 0.4 );
+        light2.position.z = 10;
+        light2.position.y = 10;
+        this.scene.add( light2 );
 
-        this.scene.add( helper );
+        let light3 = new THREE.DirectionalLight( 0xffffff, 0.4 );
+        light3.position.x = 2;
+        light3.position.y = 10;
+        this.scene.add( light3 );
+
+        //let helper = new THREE.DirectionalLightHelper( light, 5 );
+
+        //this.scene.add( helper );
 
         let ambient = new THREE.AmbientLight(0xffffff, 0.3);
         this.scene.add( ambient );
@@ -91,6 +117,10 @@ export default class App {
                 object.material = material;
                 this.scene.add( object );
                 this.loaderElt.style.opacity = 0;
+                this.container.style.opacity = 1;
+                setTimeout(()=>{
+                    this.uiElt.style.opacity = 1;
+                }, 2000);
         
             },
             // called when loading is in progresses
@@ -107,6 +137,14 @@ export default class App {
         
             }
         );
+    }
+
+    startExp(){
+        this.uiElt.style.opacity =0;
+        setTimeout(()=>{
+            this.uiElt.style.display = "none";
+        }, 2000);
+        this.controls.enabled = true;
     }
 
     render() {
